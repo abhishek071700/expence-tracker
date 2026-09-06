@@ -43,3 +43,50 @@ I built this project to practice designing a complete front-end application from
 | Hosting | GitHub Pages |
 
 ## Project structure
+expense-tracker/
+├── index.html          # Login / registration page
+├── dashboard.html       # Main app (overview, transactions, budgets, categories, analysis)
+├── css/
+│   └── styles.css       # Design system and layout
+├── js/
+│   ├── storage.js       # Data layer — users, sessions, transactions, budgets
+│   ├── auth.js          # Login / registration logic
+│   └── dashboard.js     # Dashboard logic, rendering, charts
+└── README.md
+
+
+
+## Design notes
+
+The interface uses a navy-and-ledger visual theme — a nod to the subject matter (a financial ledger) rather than a generic dashboard look. Income is consistently color-coded teal and expenses burnt orange throughout the app, including in the charts, so the color language stays intuitive as you move between screens.
+
+## How data is stored
+
+This project has no backend by design — it's meant to demonstrate front-end fundamentals. All data lives in the browser's `localStorage`, namespaced per user account, which means:
+
+- Data persists across sessions in the same browser
+- Data does **not** sync across different browsers or devices
+- Clearing browser storage will remove all saved data
+
+## Running it locally
+
+No build step needed — just open `index.html` in a browser, or serve the folder with any static server, e.g.:
+
+```bash
+npx serve .
+```
+
+## Deployment
+
+Currently deployed on **GitHub Pages**. I'm also exploring deployment on an AWS EC2 instance (Ubuntu + Apache) as a way to practice basic cloud hosting and infrastructure — deployment notes for that are kept separately as I work through it.
+
+## Roadmap / possible next steps
+
+- Export / import data as JSON for moving between devices
+- Optional backend (e.g. Firebase or Supabase) for true cross-device sync
+- Recurring transactions
+- Dark/light theme toggle
+
+## Author
+
+Built by **Abhishek** — [github.com/abhishek071700](https://github.com/abhishek071700)
