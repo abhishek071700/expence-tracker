@@ -43,6 +43,7 @@ I built this project to practice designing a complete front-end application from
 | Hosting | GitHub Pages |
 
 ## Project structure
+```
 expense-tracker/
 ├── index.html          # Login / registration page
 ├── dashboard.html       # Main app (overview, transactions, budgets, categories, analysis)
@@ -53,7 +54,7 @@ expense-tracker/
 │   ├── auth.js          # Login / registration logic
 │   └── dashboard.js     # Dashboard logic, rendering, charts
 └── README.md
-
+```
 
 
 ## Design notes
