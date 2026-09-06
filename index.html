@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — Sign in</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-hero">
+    <div class="brand">Ledger</div>
+
+    <div>
+      <div class="ledger-lines">
+        <div class="ledger-row income"><span>Salary — Sep</span><span>+₹58,000</span></div>
+        <div class="ledger-row expense"><span>Rent</span><span>−₹15,000</span></div>
+        <div class="ledger-row expense"><span>Groceries</span><span>−₹3,200</span></div>
+        <div class="ledger-row income"><span>Freelance</span><span>+₹6,500</span></div>
+      </div>
+      <p class="tagline">Every rupee, one line at a time. Track income, cap your spending by category, and see the month add up before it's over.</p>
+    </div>
+
+    <div style="color: var(--text-muted); font-size: 0.8rem;">Runs entirely in your browser — nothing leaves this device.</div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card">
+
+      <!-- LOGIN FORM -->
+      <div id="loginView">
+        <h1>Welcome back</h1>
+        <p class="sub">Sign in to pick up where you left off.</p>
+
+        <div id="loginError" class="form-error"></div>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn-primary">Sign in</button>
+        </form>
+
+        <div class="switch-link">
+          New here? <button type="button" id="showRegister">Create an account</button>
+        </div>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="registerView" style="display:none;">
+        <h1>Create your account</h1>
+        <p class="sub">Set up your ledger in a few seconds.</p>
+
+        <div id="registerError" class="form-error"></div>
+
+        <form id="registerForm">
+          <div class="field">
+            <label for="regName">Name</label>
+            <input type="text" id="regName" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="regEmail">Email</label>
+            <input type="email" id="regEmail" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" required minlength="4" autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn-primary">Create account</button>
+        </form>
+
+        <div class="switch-link">
+          Already have an account? <button type="button" id="showLogin">Sign in</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

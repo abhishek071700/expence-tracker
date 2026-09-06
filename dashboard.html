@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — Dashboard</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">Ledger</div>
+
+    <button class="nav-item active" data-section="overview">Overview</button>
+    <button class="nav-item" data-section="transactions">Transactions</button>
+    <button class="nav-item" data-section="budgets">Budgets</button>
+    <button class="nav-item" data-section="categories">Categories</button>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">Signed in as<strong id="userName">—</strong></div>
+      <button class="btn-ghost" id="logoutBtn" style="width:100%;">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section class="section active" id="section-overview">
+      <div class="page-header">
+        <div>
+          <h1>Overview</h1>
+          <div class="sub" id="monthLabel"></div>
+        </div>
+        <button class="btn-primary" style="width:auto; padding:11px 18px;" id="addTxBtnTop">+ Add transaction</button>
+      </div>
+
+      <div class="balance-hero">
+        <div class="label">Balance this month</div>
+        <div class="amount" id="balanceAmount">₹0</div>
+        <div class="balance-sub">
+          <div class="income">Income<strong id="monthIncome">₹0</strong></div>
+          <div class="expense">Expenses<strong id="monthExpense">₹0</strong></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Recent transactions</h3>
+          <div id="recentTxList"></div>
+        </div>
+        <div class="card">
+          <h3>Spending by category</h3>
+          <canvas id="overviewChart" height="220"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRANSACTIONS -->
+    <section class="section" id="section-transactions">
+      <div class="page-header">
+        <div>
+          <h1>Transactions</h1>
+          <div class="sub">Full history — filter, edit, or remove any entry.</div>
+        </div>
+        <button class="btn-primary" style="width:auto; padding:11px 18px;" id="addTxBtnFull">+ Add transaction</button>
+      </div>
+
+      <div class="card" style="margin-bottom:20px; display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+        <label style="font-size:0.85rem; color:var(--text-muted);">Filter category
+          <select id="filterCategory" class="small-select" style="margin-left:8px;">
+            <option value="">All</option>
+          </select>
+        </label>
+        <label style="font-size:0.85rem; color:var(--text-muted);">Filter type
+          <select id="filterType" class="small-select" style="margin-left:8px;">
+            <option value="">All</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="card">
+        <table class="tx-table">
+          <thead>
+            <tr><th>Date</th><th>Note</th><th>Category</th><th>Amount</th><th></th></tr>
+          </thead>
+          <tbody id="fullTxList"></tbody>
+        </table>
+        <div class="empty-state" id="fullTxEmpty" style="display:none;">No transactions match this filter yet.</div>
+      </div>
+    </section>
+
+    <!-- BUDGETS -->
+    <section class="section" id="section-budgets">
+      <div class="page-header">
+        <div>
+          <h1>Budgets</h1>
+          <div class="sub">Set a monthly cap per category and track it as the month goes.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:24px;">
+        <h3>Set a budget</h3>
+        <div class="inline-form">
+          <div class="field">
+            <label for="budgetCategory">Category</label>
+            <select id="budgetCategory"></select>
+          </div>
+          <div class="field">
+            <label for="budgetAmount">Monthly limit (₹)</label>
+            <input type="number" id="budgetAmount" min="0" step="1">
+          </div>
+          <div class="full">
+            <button class="btn-primary" id="saveBudgetBtn" style="width:auto; padding:10px 18px;">Save budget</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>This month</h3>
+        <div id="budgetList"></div>
+        <div class="empty-state" id="budgetEmpty" style="display:none;">No budgets set yet — add one above.</div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="section" id="section-categories">
+      <div class="page-header">
+        <div>
+          <h1>Categories</h1>
+          <div class="sub">Organize your transactions with custom categories.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:24px; max-width:420px;">
+        <h3>Add a category</h3>
+        <div class="field">
+          <label for="newCategoryName">Category name</label>
+          <input type="text" id="newCategoryName" placeholder="e.g. Travel">
+        </div>
+        <button class="btn-primary" id="addCategoryBtn" style="width:auto; padding:10px 18px;">Add category</button>
+      </div>
+
+      <div class="card" style="max-width:420px;">
+        <h3>All categories</h3>
+        <div id="categoryList" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ADD / EDIT TRANSACTION MODAL -->
+<div class="modal-backdrop" id="txModalBackdrop">
+  <div class="modal">
+    <h3 id="txModalTitle">Add transaction</h3>
+    <form id="txForm">
+      <input type="hidden" id="txId">
+      <div class="inline-form">
+        <div class="type-toggle">
+          <button type="button" class="active" data-type="expense">Expense</button>
+          <button type="button" data-type="income">Income</button>
+        </div>
+        <div class="field full">
+          <label for="txAmount">Amount (₹)</label>
+          <input type="number" id="txAmount" min="0" step="0.01" required>
+        </div>
+        <div class="field full">
+          <label for="txCategory">Category</label>
+          <select id="txCategory" required></select>
+        </div>
+        <div class="field full">
+          <label for="txNote">Note</label>
+          <input type="text" id="txNote" placeholder="e.g. Groceries at DMart">
+        </div>
+        <div class="field full">
+          <label for="txDate">Date</label>
+          <input type="date" id="txDate" required>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="txCancelBtn">Cancel</button>
+        <button type="submit" class="btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
